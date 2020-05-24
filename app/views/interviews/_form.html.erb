@@ -1,0 +1,18 @@
+<%= form_with(model: interview, local: true) do |form| %>
+    <div class="field">
+        <%= form.label :title %>
+        <%= form.text_field :title %>
+    </div>
+
+    <div class="field">
+        <%= form.label :start_time %>
+        <%= form.datetime_field :start_time %>
+    </div>
+    <div class="field">
+        <%= form.label :end_time %>
+        <%= form.datetime_field :end_time %>
+    </div> 
+    <div class="actions">
+        <%= form.submit %>
+    </div>
+<% end %>
