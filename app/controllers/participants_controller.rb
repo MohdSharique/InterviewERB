@@ -6,12 +6,15 @@ class ParticipantsController < ApplicationController
   end
 
   def create
-    @participant = Participant.find_by_email(participant_params)
+    @participant = Participant.find_by_email(params[:participant][:email])
     if @participant == nil
       @participant = Participant.create(create_participant_params)
     end
-    @interview = Interview.find(interview_form_param)
+    @interview = Interview.find(params[:participant][:interview_id])
+    # adding participants to interviews' participant list
     @interview.participants<< (@participant)
+    # maintaing list of interviews for a participant
+    @participant.interviews<< (@interview)
     redirect_to root_path
   end
 
@@ -36,14 +39,6 @@ class ParticipantsController < ApplicationController
   private
     def set_participant
       @participant = Participant.find(params[:id])
-    end
-
-    def interview_form_param
-      params[:participant][:interview_id]
-    end
-    
-    def participant_params
-      params[:participant][:email]
     end
 
     def create_participant_params

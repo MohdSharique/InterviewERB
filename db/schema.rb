@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_24_084745) do
+ActiveRecord::Schema.define(version: 2020_05_25_064712) do
 
   create_table "interviews", force: :cascade do |t|
     t.string "title"
@@ -18,6 +18,10 @@ ActiveRecord::Schema.define(version: 2020_05_24_084745) do
     t.datetime "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "resume_file_name"
+    t.string "resume_content_type"
+    t.bigint "resume_file_size"
+    t.datetime "resume_updated_at"
   end
 
   create_table "participants", force: :cascade do |t|

@@ -44,6 +44,6 @@ class InterviewsController < ApplicationController
     end
     
     def interview_params
-      params.require(:interview).permit(:title, :start_time, :end_time)
+      params.require(:interview).permit(:title, :start_time, :end_time, :resume)
     end
 end
