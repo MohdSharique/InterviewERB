@@ -6,15 +6,20 @@ class ParticipantsController < ApplicationController
   end
 
   def create
+    
     @participant = Participant.find_by_email(params[:participant][:email])
     if @participant == nil
       @participant = Participant.create(create_participant_params)
     end
     @interview = Interview.find(params[:participant][:interview_id])
+    
+    UserMailer.with(participant: @participant, interview: @interview).interview_info.deliver
+      
     # adding participants to interviews' participant list
     @interview.participants<< (@participant)
     # maintaing list of interviews for a participant
     @participant.interviews<< (@interview)
+
     redirect_to root_path
   end
 
