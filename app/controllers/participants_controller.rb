@@ -13,13 +13,25 @@ class ParticipantsController < ApplicationController
     end
     @interview = Interview.find(params[:participant][:interview_id])
     
-    NewInterviewWorker.perform_async(params[:participant][:email], params[:participant][:interview_id])
-    SingleReminderWorker.perform_at(@interview.start_time - 30.minutes, @participant.email)
-      
-    @interview.participants<< (@participant)
-    @participant.interviews<< (@interview)
+    isValid = true
+    for i in @participant.interviews do 
+      if (interview.start_time <= i.start_time) && (i.start_time <= interview.end_time)
+        isValid = false
+      elsif (interview.start_time <= i.end_time) && (i.end_time <= interview.end_time)
+        isValid = false
+      end
+    end
 
-    redirect_to root_path
+    if isValid
+      NewInterviewWorker.perform_async(params[:participant][:email], params[:participant][:interview_id])
+      SingleReminderWorker.perform_at(@interview.start_time - 30.minutes, @participant.email)
+        
+      @interview.participants<< (@participant)
+      @participant.interviews<< (@interview)
+      redirect_to root_path
+    else 
+      redirect_to root_path, notice: "The participant has clashing schedule"
+    end
   end
 
   def new
