@@ -13,11 +13,10 @@ class ParticipantsController < ApplicationController
     end
     @interview = Interview.find(params[:participant][:interview_id])
     
-    UserMailer.with(participant: @participant, interview: @interview).interview_info.deliver
+    NewInterviewWorker.perform_async(params[:participant][:email], params[:participant][:interview_id])
+    SingleReminderWorker.perform_at(@interview.start_time - 30.minutes, @participant.email)
       
-    # adding participants to interviews' participant list
     @interview.participants<< (@participant)
-    # maintaing list of interviews for a participant
     @participant.interviews<< (@interview)
 
     redirect_to root_path
@@ -33,7 +32,7 @@ class ParticipantsController < ApplicationController
   def destroy
     @participant = Participant.find(params[:id])
     @participant.destroy
-    redirect_to :action =>'index'
+    redirect_to root_path
   end
 
   def update

@@ -20,9 +20,6 @@ class InterviewsController < ApplicationController
 
   def show
     @interview = Interview.find(params[:id])
-    if @participant.email
-      @interview.participants<< (@participant)
-    end
   end
 
   def destroy
@@ -33,6 +30,8 @@ class InterviewsController < ApplicationController
 
   def update
     @interview.update(interview_params)
+    UpdateInterviewWorker.perform_async(@interview.id)
+    ReminderWorker.perform_at(@interview.start_time - 30.minutes, @interview.id)
     redirect_to :action =>'index'
   end
 
