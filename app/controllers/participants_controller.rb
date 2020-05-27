@@ -15,9 +15,9 @@ class ParticipantsController < ApplicationController
     
     isValid = true
     for i in @participant.interviews do 
-      if (interview.start_time <= i.start_time) && (i.start_time <= interview.end_time)
+      if (@interview.start_time <= i.start_time) && (i.start_time <= @interview.end_time)
         isValid = false
-      elsif (interview.start_time <= i.end_time) && (i.end_time <= interview.end_time)
+      elsif (@interview.start_time <= i.end_time) && (i.end_time <= @interview.end_time)
         isValid = false
       end
     end
