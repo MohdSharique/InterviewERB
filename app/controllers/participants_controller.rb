@@ -58,6 +58,6 @@ class ParticipantsController < ApplicationController
     end
 
     def create_participant_params
-      params.require(:participant).permit(:email)
+      params.require(:participant).permit(:email, :role)
     end
 end
