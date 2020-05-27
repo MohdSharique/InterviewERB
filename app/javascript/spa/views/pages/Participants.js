@@ -1,7 +1,4 @@
-// Displays all interviews created so far (like in ERB version)
-// will add links to show/edit/destroy later
-
-let getInterviewList = async() => {
+let getParticipantList = async() => {
     const options = {
         method: 'GET',
         header: {
@@ -9,7 +6,7 @@ let getInterviewList = async() => {
         }
     };
     try {
-        const response = await fetch(`interview-url`, options)
+        const response = await fetch(`participant-url`, options)
         const json = await response.json();
         return json;
     } catch(err) {
@@ -17,9 +14,10 @@ let getInterviewList = async() => {
     }
 }
 
-let Home = {
+
+let Participants = {
     render : async() => {
-        let interviews = await getInterviewList();
+        let participants = await getParticipantList();
         let view = /*html*/`
         <table>
         <thead>
@@ -31,12 +29,12 @@ let Home = {
         </thead>
     
         <tbody>
-        ${ interviews.map(interview =>
+        ${ participants.map(interview =>
             /*html*/`
             <tr>
-                <td> ${interview.title} </td>
-                <td> ${interview.start_time} </td>
-                <td> ${interview.end_time} </td>
+                <td> ${participant.title} </td>
+                <td> ${participant.start_time} </td>
+                <td> ${participant.end_time} </td>
                 <td><a href="#">Show</a></td>
                 <td><a href="#">Edit</a></td>
                 <td><a href="#">Destroy</a></td>
@@ -50,4 +48,5 @@ let Home = {
     after_render: async () => {}
 }
 
-export default Home;
+export default Participants;
+    ;
