@@ -6,13 +6,32 @@ class ParticipantsController < ApplicationController
   end
 
   def create
-    @participant = Participant.find_by_email(participant_params)
+    
+    @participant = Participant.find_by_email(params[:participant][:email])
     if @participant == nil
       @participant = Participant.create(create_participant_params)
     end
-    @interview = Interview.find(interview_form_param)
-    @interview.participants<< (@participant)
-    redirect_to root_path
+    @interview = Interview.find(params[:participant][:interview_id])
+    
+    isValid = true
+    for i in @participant.interviews do 
+      if (interview.start_time <= i.start_time) && (i.start_time <= interview.end_time)
+        isValid = false
+      elsif (interview.start_time <= i.end_time) && (i.end_time <= interview.end_time)
+        isValid = false
+      end
+    end
+
+    if isValid
+      NewInterviewWorker.perform_async(params[:participant][:email], params[:participant][:interview_id])
+      SingleReminderWorker.perform_at(@interview.start_time - 30.minutes, @participant.email)
+        
+      @interview.participants<< (@participant)
+      @participant.interviews<< (@interview)
+      redirect_to root_path
+    else 
+      redirect_to root_path, notice: "The participant has clashing schedule"
+    end
   end
 
   def new
@@ -25,7 +44,7 @@ class ParticipantsController < ApplicationController
   def destroy
     @participant = Participant.find(params[:id])
     @participant.destroy
-    redirect_to :action =>'index'
+    redirect_to root_path
   end
 
   def update
@@ -38,15 +57,7 @@ class ParticipantsController < ApplicationController
       @participant = Participant.find(params[:id])
     end
 
-    def interview_form_param
-      params[:participant][:interview_id]
-    end
-    
-    def participant_params
-      params[:participant][:email]
-    end
-
     def create_participant_params
-      params.require(:participant).permit(:email)
+      params.require(:participant).permit(:email, :role)
     end
 end
