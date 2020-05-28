@@ -3,6 +3,7 @@ class InterviewsController < ApplicationController
 
   def index
     @interviews = Interview.all
+    render json: @interviews
   end
 
   def create

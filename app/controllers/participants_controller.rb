@@ -3,6 +3,7 @@ class ParticipantsController < ApplicationController
 
   def index
     @participants = Participant.all
+    render json: @participants
   end
 
   def create
@@ -28,7 +29,6 @@ class ParticipantsController < ApplicationController
         
       @interview.participants<< (@participant)
       @participant.interviews<< (@interview)
-      redirect_to root_path
     else 
       redirect_to root_path, notice: "The participant has clashing schedule"
     end

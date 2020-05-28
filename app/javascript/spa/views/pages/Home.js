@@ -9,8 +9,9 @@ let getInterviewList = async() => {
         }
     };
     try {
-        const response = await fetch(`interview-url`, options)
+        const response = await fetch(`http://localhost:3000/interviews`, options)
         const json = await response.json();
+        console.log(json)
         return json;
     } catch(err) {
         console.log('Error getting documents', err)
@@ -20,6 +21,7 @@ let getInterviewList = async() => {
 let Home = {
     render : async() => {
         let interviews = await getInterviewList();
+        // console.log(interviews)
         let view = /*html*/`
         <table>
         <thead>

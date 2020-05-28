@@ -1,4 +1,22 @@
 // to add api support later
+
+let getInterviewList = async() => {
+    const options = {
+        method: 'POST',
+        header: {
+            'Content-Type': 'application/json'
+        }
+    };
+    try {
+        const response = await fetch(`http://localhost:3000/interviews/new`, options)
+        const json = await response.json();
+        console.log("champ")
+        return json;
+    } catch(err) {
+        console.log('Error getting documents', err)
+    }
+}
+
 let NewInterview = {
     render : async () => {
         let view =  /*html*/`
@@ -21,6 +39,12 @@ let NewInterview = {
         return view
     }
     , after_render: async () => {
+        const form = document.getElementById("new_interview");
+        console.log(Object.keys(form.elements));
+        // form.addEventListener('submit', event =>  {
+        //     event.preventDefault();
+            
+        // })
     }
 
 }

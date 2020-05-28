@@ -6,7 +6,7 @@ let getParticipantList = async() => {
         }
     };
     try {
-        const response = await fetch(`participant-url`, options)
+        const response = await fetch(`http://localhost:3000/participants`, options)
         const json = await response.json();
         return json;
     } catch(err) {
