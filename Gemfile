@@ -3,6 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.1'
 gem 'paperclip'
+gem 'rack-cors'
 
 gem 'sidekiq'
 # For app specific env var fetching 

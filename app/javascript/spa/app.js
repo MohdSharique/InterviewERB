@@ -12,7 +12,8 @@ import Participants from './views/pages/Participants.js'
 
 
 const routes = {
-    '/' : Home,
+    // '/' : Home,
+    '/' : Error404,
     '/interviews/new' : NewInterview,
     '/interviews/:id/edit' : EditInterview,
     '/participants' : Participants
