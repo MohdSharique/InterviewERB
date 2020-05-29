@@ -9,6 +9,7 @@ import Home from './views/pages/Home.js'
 import NewInterview from './views/pages/NewInterview.js';
 import EditInterview from './views/pages/EditInterview.js';
 import Participants from './views/pages/Participants.js'
+import ShowInterview from './views/pages/ShowInterview.js'
 
 
 const routes = {
@@ -16,6 +17,7 @@ const routes = {
     // '/' : Error404,
     '/new_interview' : NewInterview,
     '/interviews/:id/edit' : EditInterview,
+    '/interviews/:id/show' : ShowInterview,
     '/participants' : Participants
 };
 
@@ -33,7 +35,8 @@ const router = async () => {
     console.log("check check")
     let request = Utils.parseRequestURL()
     let parsedURL = (request.resource ? '/' + request.resource : '/') + (request.id ? '/:id' : '') + (request.verb ? '/' + request.verb : '')
-
+    
+    // debugger
     console.log(parsedURL);
     let page = routes[parsedURL] ? routes[parsedURL] : Error404
     

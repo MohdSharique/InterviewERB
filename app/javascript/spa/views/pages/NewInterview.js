@@ -1,20 +1,31 @@
 // to add api support later
 
-let getInterviewList = async() => {
-    const options = {
-        method: 'POST',
-        header: {
-            'Content-Type': 'application/json'
-        }
+let createInterview = async (interview) => {
+    let data = {
+        title: interview.title,
+        start_time: interview.start_time, 
+        end_time: interview.end_time
     };
-    try {
-        const response = await fetch(`http://localhost:3000/interviews/new`, options)
+    const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      };
+      try {
+        const response = await fetch(`http://localhost:3000/interviews`, options);
         const json = await response.json();
-        console.log("champ")
-        return json;
-    } catch(err) {
-        console.log('Error getting documents', err)
-    }
+        console.log(json);
+        if(json.success){
+            alert("Interview Created");
+        }
+        else{
+            alert("Interview not Created");
+        }
+      } catch (err) {
+        console.log(err);
+      }
 }
 
 let NewInterview = {
@@ -33,18 +44,29 @@ let NewInterview = {
                 <input type="datetime-local" name="end_time" id="end_time">
             
                 <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-            </form>         
+            </form> 
         </div>
         `
         return view
     }
     , after_render: async () => {
         const form = document.getElementById("new_interview");
-        console.log(Object.keys(form.elements));
-        // form.addEventListener('submit', event =>  {
-        //     event.preventDefault();
+        
+        form.addEventListener('submit', event =>  {
+            event.preventDefault();
+            let interview = {};
             
-        // })
+            Object.keys(form.elements).forEach(key => {
+                let element = form.elements[key];
+                // console.log(element);
+                if (element.type !== "submit") {
+                    console.log(element.value);
+                    interview[element.id] = element.value;
+                }
+              });
+            
+            createInterview(interview);
+        })
     }
 
 }
