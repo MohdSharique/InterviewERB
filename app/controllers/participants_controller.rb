@@ -3,6 +3,7 @@ class ParticipantsController < ApplicationController
 
   def index
     @participants = Participant.all
+    render json: @participants
   end
 
   def create
@@ -15,9 +16,9 @@ class ParticipantsController < ApplicationController
     
     isValid = true
     for i in @participant.interviews do 
-      if (interview.start_time <= i.start_time) && (i.start_time <= interview.end_time)
+      if (@interview.start_time <= i.start_time) && (i.start_time <= @interview.end_time)
         isValid = false
-      elsif (interview.start_time <= i.end_time) && (i.end_time <= interview.end_time)
+      elsif (@interview.start_time <= i.end_time) && (i.end_time <= @interview.end_time)
         isValid = false
       end
     end
@@ -28,7 +29,6 @@ class ParticipantsController < ApplicationController
         
       @interview.participants<< (@participant)
       @participant.interviews<< (@interview)
-      redirect_to root_path
     else 
       redirect_to root_path, notice: "The participant has clashing schedule"
     end

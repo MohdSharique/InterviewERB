@@ -18,6 +18,15 @@ module Hasmanylearn
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    config.api_only = true
+
+    # config.middleware.insert_before 0, Rack::Cors do
+    #   allow do
+    #      origins '*'
+    #      resource '*', :headers => :any, :methods => [:get, :post, :options, :delete, :patch]
+    #    end
+    # end
+
     config.active_job.queue_adapter = :sidekiq
   end
 end
